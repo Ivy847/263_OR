@@ -1,6 +1,10 @@
 import itertools
+import pandas as pd
+import numpy as np
+from pandas import read_csv
 
-def generate_tours(nodes, demand, start, max_demand_per_route, filename="tours.txt"):
+
+def generate_tours(nodes, demand, start, max_demand_per_route, filename):
     """
     Generate all tours starting and ending at 'start',
     visiting up to 4 distinct intermediate nodes.
@@ -18,6 +22,7 @@ def generate_tours(nodes, demand, start, max_demand_per_route, filename="tours.t
 
     tours = []
     other_nodes = nodes - {start}
+    demand_total = []
 
     # Generate tours with 1 to 4 intermediate nodes
     for r in range(1, 5):
@@ -31,6 +36,7 @@ def generate_tours(nodes, demand, start, max_demand_per_route, filename="tours.t
                 total += demand[store]
             if total <= max_demand_per_route:
                 tours.append("->".join(path))
+                demand_total.append(total)
 
     # Write tours to file
     with open(filename, "w") as f:
@@ -38,8 +44,27 @@ def generate_tours(nodes, demand, start, max_demand_per_route, filename="tours.t
             f.write(tour + "\n")
 
     print(f"Saved {len(tours)} tours to {filename}")
+    return tours, demand_total
+
+def find_duration(tours, duration_data, index, demand_total):
+    duration = np.zeros(len(tours))
+    tour_number = 0
+    for tour in tours:
+        nodes = tour.split('->')
+        route_demand = demand_total[tour_number]
+        prev = "CentrePort Wellington"
+        for node in nodes:
+            prev_index = index[prev]
+            node_index = index[node]
+            duration[tour_number] += duration_data.iloc[prev_index, node_index+1]
+            prev = node
+        duration[tour_number] += 15 * 60 * route_demand
+        tour_number += 1
+    return duration
 
 if __name__ == '__main__':
+    duration_dataset = pd.read_csv("WoolworthsDurations2025.csv")
+    print(duration_dataset.index)
     nodes = {"FreshChoice Cannons Creek",
              "FreshChoice Cuba Street",
             "FreshChoice Woburn",
@@ -59,8 +84,8 @@ if __name__ == '__main__':
             "Woolworths Tawa",
             "Woolworths Upper Hutt",
             "Woolworths Wainuiomata",
-             "Centre Port"}
-    start = "Centre Port"
+             "CentrePort Wellington"}
+    start = "CentrePort Wellington"
     demand_weekdays = {
         "FreshChoice Cannons Creek" : 3,
         "FreshChoice Cuba Street" : 2,
@@ -81,7 +106,7 @@ if __name__ == '__main__':
         "Woolworths Tawa" : 2,
         "Woolworths Upper Hutt" : 3,
         "Woolworths Wainuiomata" : 4,
-        "Centre Port" : 0,
+        "CentrePort Wellington" : 0,
     }
     demand_saturdays = {
         "FreshChoice Cannons Creek": 0,
@@ -103,13 +128,13 @@ if __name__ == '__main__':
         "Woolworths Tawa": 0,
         "Woolworths Upper Hutt": 0,
         "Woolworths Wainuiomata": 0,
-        "Centre Port": 0,
+        "CentrePort Wellington": 0,
     }
     filename = "weekdayTours.txt"
     max_demand_per_route = 9
     max_demand_per_route_extra = 4
-    generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route, filename="weekdays_standard.txt")
-    generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route_extra,
+    weekday_standard_tours = generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route, filename="weekdays_standard.txt")
+    weekday_extra_tours = generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route_extra,
                    filename="weekdays_extra.txt")
     #generate_tours(nodes=nodes, demand=demand_saturdays, start=start, max_demand_per_route=max_demand_per_route,
     #               filename=filename)
