@@ -1,0 +1,32 @@
+route,total_cost
+Centre Port->Woolworths Kilbirnie->Centre Port,243.05666666666667
+Centre Port->Woolworths Wainuiomata->Centre Port,397.055
+Centre Port->FreshChoice Woburn->Centre Port,229.6161111111111
+Centre Port->Woolworths Petone->Centre Port,237.975
+Centre Port->FreshChoice Cuba Street->Centre Port,138.6488888888889
+Centre Port->Woolworths Karori->Centre Port,241.57277777777776
+Centre Port->Woolworths Porirua->Centre Port,367.64000000000004
+Centre Port->Woolworths Aotea->Centre Port,321.4894444444445
+Centre Port->Woolworths Upper Hutt->Centre Port,397.89833333333337
+Centre Port->Woolworths Johnsonville Mall->Centre Port,229.07444444444448
+Centre Port->Woolworths Newtown->Centre Port,212.2588888888889
+Centre Port->Metro Cable Car Lane->Centre Port,138.02166666666668
+Centre Port->Woolworths Lower Hutt->Centre Port,266.7933333333334
+Centre Port->Woolworths Queensgate->Centre Port,277.8972222222222
+Centre Port->Woolworths Tawa->Centre Port,238.5622222222222
+Centre Port->Woolworths Crofton Downs->Centre Port,277.625
+Centre Port->Woolworths Johnsonville->Centre Port,275.6794444444444
+Centre Port->Woolworths Maidstone->Centre Port,448.1277777777778
+Centre Port->FreshChoice Cannons Creek->Centre Port,321.31888888888886
+Centre Port->FreshChoice Woburn->FreshChoice Cuba Street->Centre Port,351.0572222222222
+Centre Port->FreshChoice Woburn->Metro Cable Car Lane->Centre Port,351.2516666666667
+Centre Port->FreshChoice Woburn->Woolworths Tawa->Centre Port,431.44944444444445
+Centre Port->FreshChoice Cuba Street->FreshChoice Woburn->Centre Port,350.15166666666664
+Centre Port->FreshChoice Cuba Street->Metro Cable Car Lane->Centre Port,243.84
+Centre Port->FreshChoice Cuba Street->Woolworths Tawa->Centre Port,359.0977777777778
+Centre Port->Metro Cable Car Lane->FreshChoice Woburn->Centre Port,349.5238888888889
+Centre Port->Metro Cable Car Lane->FreshChoice Cuba Street->Centre Port,240.29999999999998
+Centre Port->Metro Cable Car Lane->Woolworths Tawa->Centre Port,358.47
+Centre Port->Woolworths Tawa->FreshChoice Woburn->Centre Port,427.065
+Centre Port->Woolworths Tawa->FreshChoice Cuba Street->Centre Port,360.00333333333333
+Centre Port->Woolworths Tawa->Metro Cable Car Lane->Centre Port,360.1977777777778
