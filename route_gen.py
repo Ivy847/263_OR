@@ -1,13 +1,15 @@
 import itertools
 
-def generate_tours(nodes, start, filename="tours.txt"):
+def generate_tours(nodes, demand, start, max_demand_per_route, filename="tours.txt"):
     """
     Generate all tours starting and ending at 'start',
     visiting up to 4 distinct intermediate nodes.
 
     Args:
         nodes (set): Set of distinct nodes (including start).
+        demand: dictionary mapping the expected demand to the relevant store.
         start: The starting node.
+        max_demand_per_route (int): The maximum demand per route.
         filename (str): File to save tours into.
     """
     # Ensure start is in the nodes set
@@ -23,7 +25,12 @@ def generate_tours(nodes, start, filename="tours.txt"):
         for perm in itertools.permutations(other_nodes, r):
             # record all the possible paths of this length
             path = [start] + list(perm) + [start]
-            tours.append("->".join(path))
+            # check that the path is valid with demand
+            total = 0
+            for store in path:
+                total += demand[store]
+            if total <= max_demand_per_route:
+                tours.append("->".join(path))
 
     # Write tours to file
     with open(filename, "w") as f:
@@ -34,7 +41,7 @@ def generate_tours(nodes, start, filename="tours.txt"):
 
 if __name__ == '__main__':
     nodes = {"FreshChoice Cannons Creek",
-             "FreshChoice Cuba Street"
+             "FreshChoice Cuba Street",
             "FreshChoice Woburn",
             "Metro Cable Car Lane",
             "Woolworths Aotea",
@@ -54,4 +61,58 @@ if __name__ == '__main__':
             "Woolworths Wainuiomata",
              "Centre Port"}
     start = "Centre Port"
-    generate_tours(nodes, start, filename="tours.txt")
+    demand_weekdays = {
+        "FreshChoice Cannons Creek" : 3,
+        "FreshChoice Cuba Street" : 2,
+        "FreshChoice Woburn" : 2,
+        "Metro Cable Car Lane" : 2,
+        "Woolworths Aotea" : 3,
+        "Woolworths Crofton Downs" : 4,
+        "Woolworths Johnsonville" : 4,
+        "Woolworths Johnsonville Mall" : 3,
+        "Woolworths Karori" : 3,
+        "Woolworths Kilbirnie" : 3,
+        "Woolworths Lower Hutt" : 3,
+        "Woolworths Maidstone" : 4,
+        "Woolworths Newtown" : 3,
+        "Woolworths Petone" : 3,
+        "Woolworths Porirua" : 4,
+        "Woolworths Queensgate" : 3,
+        "Woolworths Tawa" : 2,
+        "Woolworths Upper Hutt" : 3,
+        "Woolworths Wainuiomata" : 4,
+        "Centre Port" : 0,
+    }
+    demand_saturdays = {
+        "FreshChoice Cannons Creek": 0,
+        "FreshChoice Cuba Street": 0,
+        "FreshChoice Woburn": 0,
+        "Metro Cable Car Lane": 0,
+        "Woolworths Aotea": 0,
+        "Woolworths Crofton Downs": 0,
+        "Woolworths Johnsonville": 0,
+        "Woolworths Johnsonville Mall": 0,
+        "Woolworths Karori": 0,
+        "Woolworths Kilbirnie": 0,
+        "Woolworths Lower Hutt": 0,
+        "Woolworths Maidstone": 0,
+        "Woolworths Newtown": 0,
+        "Woolworths Petone": 0,
+        "Woolworths Porirua": 0,
+        "Woolworths Queensgate": 0,
+        "Woolworths Tawa": 0,
+        "Woolworths Upper Hutt": 0,
+        "Woolworths Wainuiomata": 0,
+        "Centre Port": 0,
+    }
+    filename = "weekdayTours.txt"
+    max_demand_per_route = 9
+    max_demand_per_route_extra = 4
+    generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route, filename="weekdays_standard.txt")
+    generate_tours(nodes=nodes, demand=demand_weekdays, start=start, max_demand_per_route=max_demand_per_route_extra,
+                   filename="weekdays_extra.txt")
+    #generate_tours(nodes=nodes, demand=demand_saturdays, start=start, max_demand_per_route=max_demand_per_route,
+    #               filename=filename)
+    #generate_tours(nodes=nodes, demand=demand_saturdays, start=start, max_demand_per_route=max_demand_per_route,
+    #               filename=filename)
+
