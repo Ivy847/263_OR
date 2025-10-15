@@ -1,0 +1,39 @@
+ORSkey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImEwMGM2OGNiZTE1NzQzZTBiM2MyY2U0NDdmZGVhMmU0IiwiaCI6Im11cm11cjY0In0='
+import numpy as np
+import pandas as pd
+locations = pd.read_csv("WoolworthsLocations.csv")
+import openrouteservice as ors
+
+# Boot up client to OpenRouteService. ORSkey is your own key as a string.
+client = ors.Client(key=ORSkey)
+coords = locations[['Long', 'Lat']] # Mapping packages work with Long, Lat arrays
+coords = coords.to_numpy().tolist() # Make the arrays into a list of lists.
+
+#creates martrix of durations between points
+matrix = client.distance_matrix(
+    locations=coords,
+    profile='driving-hgv',
+    metrics=['duration'],
+    validate=False,
+)
+names = locations["Store"].tolist() # creates list of names 
+# Creates dataframe of durations with the store names
+durations = pd.DataFrame(matrix['durations'], index=names, columns=names)
+mean = 1.374
+sigma = 0.116
+low = 1
+high = 2
+
+sigma2 = np.log(1 + (sigma**2)/(mean**2))
+sigma  = np.sqrt(sigma2)
+mu     = np.log(mean) - 0.5*sigma2
+
+rng = np.random.default_rng()  # sets random seed
+
+multiplier_matrix = rng.lognormal(mean=mu, sigma=sigma, size=durations.shape) # creates a matrix with random mulitplers
+multiplier_matrix = np.clip(multiplier_matrix, low, high) # makes sure no values go over or under the max and min
+
+var_durations = pd.DataFrame(durations.to_numpy() * multiplier_matrix, index=durations.index, columns=durations.columns)
+
+print(var_durations)
+
