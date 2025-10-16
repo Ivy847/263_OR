@@ -34,7 +34,7 @@ def find_duration_simulation(tours, duration_data, index, demand_total):
         for node in nodes:
             prev_index = index[prev]
             node_index = index[node]
-            duration[tour_number] += duration_data.iloc[prev_index, node_index + 1]
+            duration[tour_number] += duration_data.iloc[prev_index, node_index]
             prev = node
         duration[tour_number] += 15 * 60 * route_demand
         tour_number += 1
@@ -184,6 +184,7 @@ print(route_demand_dict_working)
 print(route_demand_dict_not_working)
 print(route_names_working)
 print(total_demand_working)
+
 
 
 
