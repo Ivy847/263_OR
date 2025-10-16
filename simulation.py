@@ -40,6 +40,22 @@ def find_duration_simulation(tours, duration_data, index, demand_total):
         tour_number += 1
     return duration
 
+def get_cost(durations):
+    costs = np.zeros(len(durations))
+    i = 0
+    for duration in durations:
+        if duration > 3 * 60 * 60:
+            overtime = duration - 3*60*60 
+            costs[i] += 3 * 60 * 60 * 0.055556
+            costs[i] += overtime * 0.07639
+        else:
+            costs[i] += duration * 0.055556
+            
+        i += 1
+    return costs
+    
+            
+
 index = {
         "Woolworths Aotea" : 0,
         "Woolworths Crofton Downs" : 1,
@@ -184,7 +200,6 @@ print(route_demand_dict_working)
 print(route_demand_dict_not_working)
 print(route_names_working)
 print(total_demand_working)
-
 
 
 
