@@ -40,6 +40,28 @@ def find_duration_simulation(tours, duration_data, index, demand_total):
         tour_number += 1
     return duration
 
+index = {
+        "Woolworths Aotea" : 0,
+        "Woolworths Crofton Downs" : 1,
+        "Woolworths Johnsonville" : 2,
+        "Woolworths Johnsonville Mall" : 3,
+        "Woolworths Karori" : 4,
+        "Woolworths Kilbirnie" : 5,
+        "Woolworths Lower Hutt" : 6,
+        "Woolworths Maidstone" : 7,
+        "Woolworths Newtown" : 8,
+        "Woolworths Petone" : 9,
+        "Woolworths Porirua" : 10,
+        "Woolworths Queensgate" : 11,
+        "Woolworths Tawa" : 12,
+        "Woolworths Upper Hutt" : 13,
+        "Woolworths Wainuiomata" : 14,
+        "FreshChoice Cuba Street" : 15,
+        "FreshChoice Woburn" : 16,
+        "FreshChoice Cannons Creek" : 17,
+        "Metro Cable Car Lane" : 18,
+        "CentrePort Wellington" : 19,
+    }
 
 ORSkey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImEwMGM2OGNiZTE1NzQzZTBiM2MyY2U0NDdmZGVhMmU0IiwiaCI6Im11cm11cjY0In0='
 import numpy as np
@@ -108,6 +130,7 @@ for route in routes:
 
 print(route_demand_dict_working)
 print(route_demand_dict_not_working)
+
 
 
 
