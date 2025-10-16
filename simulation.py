@@ -175,6 +175,17 @@ routes = [
 ]
 
 demands = bootstrap_weekday_demand(weekday_demand_distribution)
+routes = [
+    ["CentrePort Wellington","Woolworths Porirua", "Woolworths Johnsonville","CentrePort Wellington"],
+    ["CentrePort Wellington","Woolworths Upper Hutt", "Woolworths Maidstone","CentrePort Wellington"],
+    ["CentrePort Wellington","Metro Cable Car Lane", "Woolworths Karori", "Woolworths Crofton Downs","CentrePort Wellington"],
+    ["CentrePort Wellington","Woolworths Kilbirnie", "Woolworths Newtown", "FreshChoice Cuba Street","CentrePort Wellington"],
+    ["CentrePort Wellington","Woolworths Petone", "Woolworths Wainuiomata", "FreshChoice Woburn","CentrePort Wellington"],
+    ["CentrePort Wellington","Woolworths Johnsonville Mall", "Woolworths Queensgate", "Woolworths Lower Hutt","CentrePort Wellington"],
+    ["CentrePort Wellington","Woolworths Aotea", "FreshChoice Cannons Creek", "Woolworths Tawa","CentrePort Wellington"]
+]
+
+demands = bootstrap_weekday_demand(weekday_demand_distribution)
 
 route_demand_dict_working = {}
 route_demand_dict_not_working = {}
@@ -192,17 +203,6 @@ for route in routes:
         route_demand_dict_working[route_name] = total_demand
     else:
         route_demand_dict_not_working[route_name] = total_demand
-
-print(route_demand_dict_working)
-
-
-
-print(route_demand_dict_not_working)
-print(route_names_working)
-print(total_demand_working)
-
-
-
 
 
 
