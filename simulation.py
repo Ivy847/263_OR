@@ -1,6 +1,22 @@
 import numpy as np
 import pandas as pd
 
+def generate_saturday_demand(stores, demand_limits):
+    saturday_demand_dict = {}
+    for store in stores:
+        demand = round(numpy.random.uniform(low=0.0, high=demand_limits[store], size=None))
+        if demand != 0:
+            saturday_demand_dict[store] = demand
+
+    return saturday_demand_dict
+
+def bootstrap_weekday_demand(store_demands):
+    weekday_demand_dict = {}
+    for store in store_demands:
+        weekday_demand_dict[store] = numpy.random.choice(store_demands[store])
+
+    return weekday_demand_dict
+
 def find_duration_simulation(tours, duration_data, index, demand_total):
     '''
     Parameters:
@@ -92,6 +108,7 @@ for route in routes:
 
 print(route_demand_dict_working)
 print(route_demand_dict_not_working)
+
 
 
 
