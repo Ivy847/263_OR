@@ -181,7 +181,7 @@ if __name__ == "__main__":
         tours_std,
         lookup,
         demand_weekdays,
-        "Routes with Duration & per box - Standard.csv",
+        "Routes with Duration & Cost break up - Standard.csv",
         "Route and Total Cost - Standard.csv",
         unload_minutes_per_box=15,
     )
@@ -194,7 +194,7 @@ if __name__ == "__main__":
         tours_extra,
         lookup,
         demand_weekdays,
-        "Routes with Duration & per box - Extra.csv",
+        "Routes with Duration & Cost break up - Extra.csv",
         "Route and Total Cost - Extra.csv",
         unload_minutes_per_box=15,
     )
