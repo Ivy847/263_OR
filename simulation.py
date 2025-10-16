@@ -63,6 +63,52 @@ index = {
         "CentrePort Wellington" : 19,
     }
 
+weekend_demand_limits = {
+        "FreshChoice Cannons Creek" : 3,
+        "FreshChoice Cuba Street" : 2,
+        "FreshChoice Woburn" : 2,
+        "Metro Cable Car Lane" : 2,
+        "Woolworths Aotea" : 3,
+        "Woolworths Crofton Downs" : 4,
+        "Woolworths Johnsonville" : 4,
+        "Woolworths Johnsonville Mall" : 3,
+        "Woolworths Karori" : 3,
+        "Woolworths Kilbirnie" : 3,
+        "Woolworths Lower Hutt" : 3,
+        "Woolworths Maidstone" : 4,
+        "Woolworths Newtown" : 3,
+        "Woolworths Petone" : 3,
+        "Woolworths Porirua" : 4,
+        "Woolworths Queensgate" : 3,
+        "Woolworths Tawa" : 2,
+        "Woolworths Upper Hutt" : 3,
+        "Woolworths Wainuiomata" : 4,
+        "CentrePort Wellington" : 0,
+    }
+
+weekday_demand_distribution = {
+        "FreshChoice Cannons Creek" : [3,2,2,2,1,1,1,2,1,2,3,3,3,3,4,1,1,1,2,1],
+        "FreshChoice Cuba Street" : [1,2,2,1,2,3,2,1,2,1,1,2,2,2,2,2,2,3,2,2],
+        "FreshChoice Woburn" : [2,2,3,1,1,2,2,1,1,1,3,2,3,1,2,1,2,1,1,2],
+        "Metro Cable Car Lane" : [2,2,1,2,2,1,1,2,1,2,5,1,2,3,2,2,1,2,2,3],
+        "Woolworths Aotea" : [2,5,3,2,3,2,3,2,3,2,3,3,3,2,2,1,3,1,2,1],
+        "Woolworths Crofton Downs" : [3,2,4,2,3,1,4,4,6,2,5,2,4,3,2,1,2,2,1,2],
+        "Woolworths Johnsonville" : [3,1,2,5,3,2,5,4,3,5,5,2,1,3,3,1,2,4,3,1],
+        "Woolworths Johnsonville Mall" : [2,3,4,2,3,2,3,2,1,2,1,3,1,1,4,2,1,5,1,2],
+        "Woolworths Karori" : [2,2,3,2,3,3,2,1,2,3,3,2,4,3,3,3,2,1,2,2],
+        "Woolworths Kilbirnie" : [2,3,4,2,2,1,2,4,3,1,2,2,2,2,3,2,3,3,3,4],
+        "Woolworths Lower Hutt" : [2,2,1,4,1,1,2,3,2,2,3,3,5,3,1,3,3,2,2,3],
+        "Woolworths Maidstone" : [3,4,2,2,2,3,5,4,3,6,2,2,2,2,1,1,1,6,3,3],
+        "Woolworths Newtown" : [2,4,2,5,3,3,3,5,3,2,4,1,2,3,3,1,1,3,2,3],
+        "Woolworths Petone" : [3,5,2,2,4,1,2,2,2,3,3,3,2,2,1,2,3,2,3,2],
+        "Woolworths Porirua" : [5,1,5,2,2,3,2,4,1,3,3,3,3,5,2,2,2,2,4,1],
+        "Woolworths Queensgate" : [2,2,3,3,4,2,2,2,2,1,2,1,4,2,2,1,2,3,1,2,4,2,2],
+        "Woolworths Tawa" : [2,2,2,2,2,1,1,1,1,4,2,2,1,2,3,1,2,4,2,2],
+        "Woolworths Upper Hutt" : [2,1,2,1,1,1,2,1,1,4,3,2,4,3,2,4,1,3,2,2],
+        "Woolworths Wainuiomata" : [3,4,2,2,2,2,2,3,3,3,1,3,2,4,2,4,5,1,1,5],
+        "CentrePort Wellington" : [0],
+    }
+
 ORSkey = 'eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImEwMGM2OGNiZTE1NzQzZTBiM2MyY2U0NDdmZGVhMmU0IiwiaCI6Im11cm11cjY0In0='
 import numpy as np
 import pandas as pd
@@ -138,6 +184,7 @@ print(route_demand_dict_working)
 print(route_demand_dict_not_working)
 print(route_names_working)
 print(total_demand_working)
+
 
 
 
