@@ -224,66 +224,6 @@ def handle_over_capacity_routesub60(route, requested_demands):
     return new_route, nodes_to_remove
 import numpy as np
 
-def handle_over_capacity_route(route, requested_demands): ''' Parameters ---------- route: str containing route in the format: "node1->node2->node3" requested_demands: dict with node names as keys, and node demands as values
-
-Returns
---------
-new_route: str containing new route in the format: "node1->node2->node3"
-nodes_to_remove: dict with nodes names removed from the route as keys, and node demands as values
-'''
-nodes = route.split('->')
-total_demand = sum(requested_demands.values())
-excess = total_demand - 9
-nodes_to_remove = {}
-i = 0
-
-while sum(nodes_to_remove.values()) < excess:
-    nodes_to_remove[nodes[i]] = requested_demands[nodes[i]]
-    i += 1
-
-new_route = "CentrePort Wellington->"
-for node in nodes:
-    if node in nodes_to_remove:
-        continue
-    else:
-        new_route += node
-        new_route += "->"
-new_route += "CentrePort Wellington"
-
-return new_route, nodes_to_remove
-def handle_over_capacity_route(route, requested_demands): ''' Parameters ---------- route: str containing route in the format: "node1->node2->node3" requested_demands: dict with node names as keys, and node demands as values
-
-Returns
---------
-new_route: str containing new route in the format: "node1->node2->node3"
-nodes_to_remove: dict with nodes names removed from the route as keys, and node demands as values
-'''
-nodes = route.split('->')
-total_demand = sum(requested_demands.values())
-capacity_limit = 9
-
-# Create a list of tuples (node, demand) for sorting
-nodes_demands = [(node, requested_demands[node]) for node in nodes]
-
-# Sort by demand ascending, but keep original order for ties
-# To keep the original order as a tiebreaker, we can sort by demand only
-sorted_nodes = sorted(nodes_demands, key=lambda x: x[1])
-
-nodes_to_remove = {}
-demand_sum = total_demand
-
-# Remove nodes starting from the lowest demand
-for node, demand in sorted_nodes:
-    if demand_sum <= capacity_limit:
-        break
-    nodes_to_remove[node] = demand
-    demand_sum -= demand
-
-# Construct new route excluding the removed nodes, maintaining original order
-new_nodes = [node for node in nodes if node not in nodes_to_remove]
-new_route = "CentrePort Wellington->" + "->".join(new_nodes) + "->CentrePort Wellington"
-
-return new_route, nodes_to_remove
 def handle_over_capacity_route(route, requested_demands):
     '''
     Parameters
