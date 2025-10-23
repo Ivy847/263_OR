@@ -662,15 +662,14 @@ plt.show()
 
 
 
-# testing reduced-fleet simulation
-# =========================
-# REDUCED FLEET: WW vs Sub60 (drop-in block)
-# =========================
+
+
+# Reduced Fleet Simulation: WW vs Sub60 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# --- constants for Sub60 pricing ---
+# Constants for Sub60 pricing
 RF_SUB60_BLOCK_SEC  = 4 * 60 * 60      # 4 hours in seconds
 RF_SUB60_BLOCK_COST = 1000.0
 RF_SUB60_VAN_CAP    = 4                # boxes per Sub60 van
@@ -781,7 +780,7 @@ def rf_weekday_simulate_fleet(F, n_runs=2000, include_fixed=True, fixed_per_van_
 
     return np.array(totals)
 
-# --- tiny helper for 95% bootstrap CI of the mean ---
+# helper function for 95% bootstrap CI of the mean
 def rf_bootstrap_mean_ci(arr, B=3000, alpha=0.05, rng=None):
     if rng is None:
         rng = np.random.default_rng()
@@ -795,11 +794,10 @@ def rf_bootstrap_mean_ci(arr, B=3000, alpha=0.05, rng=None):
     hi = np.percentile(boots, 100*(1 - alpha/2))
     return arr.mean(), lo, hi
 
-# =========================
-# RUN: Saturday 2 vs 3 vans (operating cost only)
-# =========================
-rf_sat2 = rf_saturday_simulate_fleet(F=2, n_runs=2000, include_fixed=True)
-rf_sat3 = rf_saturday_simulate_fleet(F=3, n_runs=2000, include_fixed=True)
+
+# Saturday 2 vs 3 vans (operating cost only - No Fixed cost)
+rf_sat2 = rf_saturday_simulate_fleet(F=2, n_runs=2000, include_fixed=False)
+rf_sat3 = rf_saturday_simulate_fleet(F=3, n_runs=2000, include_fixed=False)
 
 print("\nSaturday mean costs (no fixed):")
 print("  2 vans:", rf_sat2.mean(), " 95% CI:", np.percentile(rf_sat2,[2.5,97.5]))
@@ -830,7 +828,7 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# --- HISTOGRAMS: Saturday (2 vs 3 vans) ---
+# Histograms for Saturday (2 vs 3 vans)
 plt.figure(figsize=(8, 5))
 sat_min = min(rf_sat2.min(), rf_sat3.min())
 sat_max = max(rf_sat2.max(), rf_sat3.max())
@@ -850,9 +848,8 @@ plt.grid(True, alpha=0.3)
 plt.tight_layout()
 plt.show()
 
-# =========================
-# RUN: Weekday 3 vs 4 vans (fixed included)
-# =========================
+
+# Weekday 3 vs 4 vans (fixed included)
 rf_wk3 = rf_weekday_simulate_fleet(F=3, n_runs=2000, include_fixed=True)
 rf_wk4 = rf_weekday_simulate_fleet(F=4, n_runs=2000, include_fixed=True)
 
