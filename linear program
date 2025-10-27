@@ -1,0 +1,101 @@
+import pandas as pd
+from pulp import *
+
+
+# finds what routes vist EACH store so returns a list of the routes ids that visit each store
+def find_routes(store, df):
+    Route_store = []
+    for route in df["route"]:
+        # split into stops and strip whitespace
+        stops = [s.strip() for s in route.split("->")]
+        if store in stops:
+            rid = df.loc[df["route"] == route, "id"].values[0]
+            Route_store.append(rid)
+    return Route_store
+
+# reads the data into a data frame of the routes and there costs.
+RoutesData = pd.read_csv("Route and Total Cost - Standard.csv")
+RoutesDataSub60 = pd.read_csv("Route and Total Cost - Extra.csv")
+# create ids for each route
+RoutesData["id"] = [f"X{i}" for i in range(len(RoutesData))]
+RoutesDataSub60["id"] = [f"Z{i}" for i in range(len(RoutesDataSub60))]
+
+
+# all the stores without the centre port
+nodes = {"FreshChoice Cannons Creek",
+            "FreshChoice Cuba Street",
+            "FreshChoice Woburn",
+            "Metro Cable Car Lane",
+            "Woolworths Aotea",
+            "Woolworths Crofton Downs",
+            "Woolworths Johnsonville",
+            "Woolworths Johnsonville Mall",
+            "Woolworths Karori",
+            "Woolworths Kilbirnie",
+            "Woolworths Lower Hutt",
+            "Woolworths Maidstone",
+            "Woolworths Newtown",
+            "Woolworths Petone",
+            "Woolworths Porirua",
+            "Woolworths Queensgate",
+            "Woolworths Tawa",
+            "Woolworths Upper Hutt",
+            "Woolworths Wainuiomata",
+            }
+
+VAN_COST_YEAR   = 50000
+DAYS_PER_YEAR   = 312       # Mon–Sat * 52 (adjust if needed)
+VAN_COST_DAY    = VAN_COST_YEAR / DAYS_PER_YEAR
+ROUTES_PER_VAN  = 2
+MAX_VANS        = 1
+
+# uses the ids as the routes variables. to list creates the panda series to a lsit.
+Routes_vars = LpVariable.dicts("RoutesWoolworth", RoutesData["id"].tolist(), lowBound=0, upBound=1, cat=LpBinary)
+Routes_vars_sub60 = LpVariable.dicts("Routessub60", RoutesDataSub60["id"].tolist(), lowBound=0, upBound=1, cat=LpBinary)
+Vans = LpVariable("WoolworthsVans", lowBound=0, upBound=MAX_VANS, cat=LpInteger)
+
+prob = LpProblem("Route_Selection_Problem", LpMinimize)
+
+# Woolworth routes limited to 8 (4 vans 2 shifts each)
+prob += lpSum(Routes_vars[i] for i in RoutesData["id"]) <= ROUTES_PER_VAN * Vans
+
+for store in nodes:
+    ww_hits  = find_routes(store, RoutesData)
+    s60_hits = find_routes(store, RoutesDataSub60)
+    prob += (
+        lpSum(Routes_vars[i] for i in ww_hits) +
+        lpSum(Routes_vars_sub60[i] for i in s60_hits)
+    ) == 1
+
+
+# Objective to minimise total cost (both Woolworth and Sub60 routes)
+prob += (
+    lpSum(Routes_vars[i] * RoutesData[RoutesData["id"] == i]["total_cost"].values[0] for i in RoutesData["id"]) +
+    lpSum(Routes_vars_sub60[j] * 1000 for j in RoutesDataSub60["id"]) # cost for each route is 1000
+    + VAN_COST_DAY * Vans
+)
+
+prob.writeLP("Routes.lp")
+
+prob.solve()
+
+for v in prob.variables():
+    if v.varValue == 1:   # only print chosen routes
+        print(v.name, "=", v.varValue)
+
+print("Chosen Woolworths routes:")
+for i in RoutesData["id"]:
+    if Routes_vars[i].value() == 1:
+        route = RoutesData.loc[RoutesData["id"] == i, "route"].values[0]
+        cost = RoutesData.loc[RoutesData["id"] == i, "total_cost"].values[0]
+        print(i, route, cost)
+
+print("\nChosen Sub60 routes:")
+for j in RoutesDataSub60["id"]:
+    if Routes_vars_sub60[j].value() == 1:
+        route = RoutesDataSub60.loc[RoutesDataSub60["id"] == j, "route"].values[0]
+        cost = RoutesDataSub60.loc[RoutesDataSub60["id"] == j, "total_cost"].values[0]
+        print(j, route, cost)
+
+# Print total cost
+print("Total Cost = ", value(prob.objective))
